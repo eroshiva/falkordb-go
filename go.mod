@@ -1,4 +1,4 @@
-module github.com/FalkorDB/falkordb-go/v2
+module github.com/eroshiva/falkordb-go/v2
 
 go 1.25
 
