@@ -8,7 +8,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/FalkorDB/falkordb-go/v2"
+	"github.com/eroshiva/falkordb-go/v2"
 )
 
 func ExampleSelectGraph() {
