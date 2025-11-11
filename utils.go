@@ -37,6 +37,15 @@ func mapToString(data map[string]interface{}) string {
 	return "{" + strings.Join(pairsArray, ",") + "}"
 }
 
+func float32ArrayToString(arr []float32) string {
+	var arrayLength = len(arr)
+	strArray := []string{}
+	for i := 0; i < arrayLength; i++ {
+		strArray = append(strArray, ToString(arr[i]))
+	}
+	return "[" + strings.Join(strArray, ",") + "]"
+}
+
 func ToString(i interface{}) string {
 	if i == nil {
 		return "null"
@@ -50,6 +59,8 @@ func ToString(i interface{}) string {
 		return strconv.Itoa(i.(int))
 	case int64:
 		return strconv.FormatInt(i.(int64), 10)
+	case float32:
+		return strconv.FormatFloat(float64(i.(float32)), 'f', -1, 32)
 	case float64:
 		return strconv.FormatFloat(i.(float64), 'f', -1, 64)
 	case bool:
@@ -63,8 +74,11 @@ func ToString(i interface{}) string {
 	case []string:
 		arr := i.([]string)
 		return strArrayToString(arr)
+	case []float32:
+		arr := i.([]float32)
+		return float32ArrayToString(arr)
 	default:
-		panic("Unrecognized type to convert to string")
+		panic(fmt.Sprintf("Unrecognized type %T to convert to string", i))
 	}
 }
 
