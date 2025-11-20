@@ -399,7 +399,7 @@ func (qr *QueryResult) PrettyPrint() {
 			}
 		}
 		// ToDo - error handling must be improved
-		_ = table.Append(results)
+		_ = table.Bulk(results)
 	} else {
 		// ToDo - error handling must be improved
 		_ = table.Append([]string{"No data returned."})

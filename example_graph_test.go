@@ -4,20 +4,24 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
+	"testing"
 
 	"github.com/eroshiva/falkordb-go/v2"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
-func ExampleSelectGraph() {
-	db, _ := falkordb.FalkorDBNew(&falkordb.ConnectionOption{Addr: "0.0.0.0:6379"})
+func TestExampleSelectGraph(t *testing.T) {
+	db, err := falkordb.FalkorDBNew(&falkordb.ConnectionOption{Addr: "0.0.0.0:6379"})
+	require.NoError(t, err)
 
 	graph := db.SelectGraph("social")
 
 	q := "CREATE (w:WorkPlace {name:'FalkorDB'}) RETURN w"
-	res, _ := graph.Query(q, nil, nil)
+	res, err := graph.Query(q, nil, nil)
+	assert.NoError(t, err)
 
 	res.Next()
 	r := res.Record()
@@ -26,7 +30,7 @@ func ExampleSelectGraph() {
 	// Output: WorkPlace
 }
 
-func ExampleGraphNew_tls() {
+func TestExampleGraphNew_tls(t *testing.T) {
 	// Consider the following helper methods that provide us with the connection details (host and password)
 	// and the paths for:
 	//     tls_cert - A a X.509 certificate to use for authenticating the  server to connected clients, masters or cluster peers. The file should be PEM formatted
@@ -47,10 +51,9 @@ func ExampleGraphNew_tls() {
 	}
 
 	// Load CA cert
-	caCert, err := ioutil.ReadFile(tls_cacert)
-	if err != nil {
-		log.Fatal(err)
-	}
+	caCert, err := os.ReadFile(tls_cacert)
+	require.NoError(t, err)
+
 	caCertPool := x509.NewCertPool()
 	caCertPool.AppendCertsFromPEM(caCert)
 
@@ -72,6 +75,7 @@ func ExampleGraphNew_tls() {
 		Password:  password,
 		TLSConfig: clientTLSConfig,
 	})
+	require.NoError(t, err)
 	graph := db.SelectGraph("social")
 
 	q := "CREATE (w:WorkPlace {name:'FalkorDB'}) RETURN w"
