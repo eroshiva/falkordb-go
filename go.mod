@@ -5,7 +5,7 @@ go 1.25
 require (
 	github.com/olekukonko/tablewriter v1.1.0
 	github.com/redis/go-redis/v9 v9.10.0
-	github.com/stretchr/testify v1.10.0
+	github.com/stretchr/testify v1.11.1
 )
 
 require (
